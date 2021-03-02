@@ -10,7 +10,7 @@ FROM base as production
 ENV NODE_ENV=production
 RUN yarn install --frozen-lockfile --ignore-engines
 COPY . /
-CMD [ "yarn". "start" ]
+CMD [ "yarn", "start" ]
 
 FROM base as dev
 ENV NODE_ENV=development
