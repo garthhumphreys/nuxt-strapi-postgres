@@ -1,6 +1,9 @@
 version: '3.8'
 services:
   nuxtjs:
+    container_name: nuxt
+    depends_on:
+      - strapidev
     stdin_open: true
     tty: true
     build:
@@ -19,3 +22,47 @@ services:
     environment:
       HOST: 0.0.0.0
       NODE_ENV: development
+  
+  strapidev:
+    image: strapi/strapi
+    container_name: strapidev
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - strapi-app-network
+    volumes:
+      - ./strapi:/usr/src/app
+    ports:
+      - "1337:1337"
+    depends_on:
+      - db
+  
+  db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    env_file: .env
+    networks:
+      - strapi-app-network
+    volumes:
+      - ./db:/var/lib/postgresql/data
+      - /tmp:/tmp
+      - strapidata:/data/db
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+
+networks:
+  strapi-app-network:
+    driver: bridge
+
+volumes:
+  strapidata:
