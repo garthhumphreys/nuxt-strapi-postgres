@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  nuxtjs:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app
+    command: yarn dev
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    restart: always
+    environment:
+      HOST: 0.0.0.0
+      NODE_ENV: development
