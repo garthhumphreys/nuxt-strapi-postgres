@@ -2,3 +2,11 @@
 node_modules
 dist
 .nuxt
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.gitignore
+README.md
+LICENSE
+.vscode
