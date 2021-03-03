@@ -1,8 +1,6 @@
 # Dockerfile
 FROM node:12.20.2-alpine as base
 
-COPY sql/*.sql /docker-entrypoint-initdb.d/
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./

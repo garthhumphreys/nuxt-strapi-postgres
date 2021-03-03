@@ -24,7 +24,7 @@ services:
       NODE_ENV: development
   
   strapidev:
-    image: strapi/strapi
+    image: strapi/strapi:3.5.2-alpine
     container_name: strapidev
     restart: unless-stopped
     env_file: .env
@@ -38,7 +38,7 @@ services:
     networks:
       - strapi-app-network
     volumes:
-      - ./strapi:/usr/src/app
+      - ./strapi:/srv/app
     ports:
       - "1337:1337"
     depends_on:
@@ -46,23 +46,35 @@ services:
   
   db:
     container_name: postgres
-    image: postgres
+    image: postgres:13.2-alpine
     restart: always
     env_file: .env
     networks:
       - strapi-app-network
     volumes:
-      - ./db:/var/lib/postgresql/data
-      - /tmp:/tmp
-      - strapidata:/data/db
+      # - ./db:/var/lib/postgresql/data
+      # - /tmp:/tmp
+      # - strapidata:/data/db
+      - pgdata:/var/lib/postgresql/data/
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
+  
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment: 
+        PGADMIN_DEFAULT_EMAIL: "admin@gov.ky"
+        PGADMIN_DEFAULT_PASSWORD: "test123!"
+    ports: 
+        - "16543:80"
+    depends_on: 
+        - db
 
 networks:
   strapi-app-network:
     driver: bridge
 
 volumes:
-  strapidata:
+  pgdata:
