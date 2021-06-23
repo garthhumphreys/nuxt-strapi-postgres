@@ -1,5 +1,5 @@
 # Dockerfile
-FROM node:12.20.2-alpine as base
+FROM node:14.17.1-alpine3.12 as base
 
 WORKDIR /usr/src/app
 
