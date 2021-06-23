@@ -24,7 +24,7 @@ services:
       NODE_ENV: development
   
   strapidev:
-    image: strapi/strapi:3.5.2-alpine
+    image: strapi/strapi:3.6.5-alpine
     container_name: strapidev
     restart: unless-stopped
     env_file: .env
