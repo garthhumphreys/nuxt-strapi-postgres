@@ -46,7 +46,7 @@ services:
   
   db:
     container_name: postgres
-    image: postgres:13.2-alpine
+    image: postgres:13.3-alpine
     restart: always
     env_file: .env
     networks:
